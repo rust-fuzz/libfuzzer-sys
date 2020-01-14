@@ -1,58 +1,9 @@
-Barebones wrapper around libFuzzer runtime library.
+# ARCHIVED
 
-The CPP parts are extracted from compiler-rt git repository with `git filter-branch`.
+This is the old, archived version of
+[`rust-fuzz/libfuzzer`](https://github.com/rust-fuzz/libfuzzer) -- you almost
+definitely want that instead of this.
 
-libFuzzer relies on LLVM sanitizer support. The Rust compiler has built-in support for LLVM sanitizer support, for now, it's limited to Linux. As a result, libfuzzer-sys only works on Linux.
-
-# How to use
-
-Use [cargo-fuzz].
-
-[cargo-fuzz]: https://github.com/rust-fuzz/cargo-fuzz
-
-This crate can also be used manually as following:
-
-First create a new cargo project:
-
-```
-$ cargo new --bin fuzzed
-$ cd fuzzed
-```
-
-Then add a dependency on the fuzzer-sys crate and your own crate:
-
-```toml
-[dependencies]
-libfuzzer-sys = { git = "https://github.com/rust-fuzz/libfuzzer-sys.git" } # will eventually publish to crates.io
-your_crate = "*" # or something
-```
-
-and change the `src/main.rs` to fuzz your code:
-
-```rust
-#![no_main]
-
-use libfuzzer_sys::fuzz_target;
-
-fuzz_target!(|data: &[u8]| {
-    // code to fuzz goes here
-});
-```
-
-Finally, run the following commands:
-
-```
-$ cargo rustc -- -C passes='sancov' -C llvm-args='-sanitizer-coverage-level=3' -Z sanitizer=address
-$ ./target/debug/fuzzed # runs fuzzing
-```
-
-## Updating libfuzzer from upstream
-
-```
-./update-libfuzzer.sh <llvm/compiler-rt SHA1>
-```
-
-## License
-
-All files in `libfuzzer` directory are licensed NCSA.
-Everything else is dual-licensed Apache 2.0 and MIT.
+We are keeping it around at this URL so that all the old existing `git =
+"https://github.com/rust-fuzz/libfuzzer-sys.git"` dependencies that `cargo fuzz`
+used to create continue to work, and we don't break anyone.
